@@ -5,10 +5,10 @@ import emailjs from "@emailjs/browser";
 import logoImg from "/logo.png";
 
 // ─── EmailJS config ───────────────────────────────────────────────
-// Credentials được load từ file .env (không commit lên GitHub)
-const EMAILJS_SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID;
-const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
-const EMAILJS_PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+// Đọc từ .env nếu có (local dev), fallback về giá trị hardcode (production)
+const EMAILJS_SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID  ?? "service_khv9xsk";
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID ?? "template_k2nedqp";
+const EMAILJS_PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY  ?? "GPXDphrh17aaprU7W";
 // ──────────────────────────────────────────────────────────────────
 
 export function WarmContactFooter() {
@@ -34,7 +34,8 @@ export function WarmContactFooter() {
       );
       setStatus("success");
       setForm({ name: "", email: "", message: "" });
-    } catch {
+    } catch (err) {
+      console.error("[EmailJS] Send failed:", err);
       setStatus("error");
     }
   };

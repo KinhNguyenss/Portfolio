@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Menu, X, ArrowUpRight } from "lucide-react";
+import logoImg from "/logo.png";
 
 const NAV_LINKS = [
   { label: "About", href: "#about" },
@@ -38,19 +39,21 @@ export function WarmNav() {
         <div
           className="max-w-6xl mx-auto flex items-center justify-between"
         >
-          {/* Wordmark */}
+          {/* Logo */}
           <a
             href="#"
-            style={{
-              fontFamily: "'Playfair Display', serif",
-              color: "#F4F0E6",
-              fontWeight: 700,
-              fontSize: "1.15rem",
-              textDecoration: "none",
-              letterSpacing: "0.02em",
-            }}
+            style={{ display: "inline-flex", alignItems: "center", textDecoration: "none" }}
           >
-            NQK
+            <img
+              src={logoImg}
+              alt="NQK Logo"
+              style={{
+                height: "36px",
+                width: "auto",
+                objectFit: "contain",
+                display: "block",
+              }}
+            />
           </a>
 
           {/* Desktop links */}
@@ -80,10 +83,11 @@ export function WarmNav() {
           </div>
 
           {/* CTA */}
-          <a
-            href="mailto:kinhnguyen.dev@gmail.com"
+          <button
             className="hidden md:inline-flex items-center gap-1.5 transition-all duration-250 hover:scale-[1.03]"
             style={{
+              position: "relative",
+              overflow: "hidden",
               background: "rgba(212, 163, 115, 0.1)",
               border: "1px solid rgba(212, 163, 115, 0.3)",
               borderRadius: "9999px",
@@ -92,7 +96,7 @@ export function WarmNav() {
               fontSize: "0.83rem",
               fontWeight: 500,
               padding: "0.5rem 1.2rem",
-              textDecoration: "none",
+              cursor: "pointer",
             }}
             onMouseEnter={(e) => {
               const el = e.currentTarget as HTMLElement;
@@ -104,10 +108,37 @@ export function WarmNav() {
               el.style.background = "rgba(212, 163, 115, 0.1)";
               el.style.borderColor = "rgba(212, 163, 115, 0.3)";
             }}
+            onClick={(e) => {
+              // Ripple
+              const btn = e.currentTarget;
+              const rect = btn.getBoundingClientRect();
+              const size = Math.max(rect.width, rect.height) * 2;
+              const x = e.clientX - rect.left - size / 2;
+              const y = e.clientY - rect.top - size / 2;
+              const ripple = document.createElement("span");
+              ripple.style.cssText = `
+                position:absolute;
+                border-radius:50%;
+                width:${size}px;
+                height:${size}px;
+                left:${x}px;
+                top:${y}px;
+                background:rgba(212,163,115,0.35);
+                transform:scale(0);
+                animation:ripple-expand 0.55s ease-out forwards;
+                pointer-events:none;
+              `;
+              btn.appendChild(ripple);
+              ripple.addEventListener("animationend", () => ripple.remove());
+              // Scroll
+              setTimeout(() => {
+                document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
+              }, 180);
+            }}
           >
             Say hello
             <ArrowUpRight size={13} />
-          </a>
+          </button>
 
           {/* Mobile toggle */}
           <button

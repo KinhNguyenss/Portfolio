@@ -1,7 +1,54 @@
+import { useState } from "react";
 import { motion } from "motion/react";
-import { Mail, Github, ArrowUpRight, MapPin } from "lucide-react";
+import { Mail, Github, ArrowUpRight, MapPin, Send, CheckCircle, AlertCircle } from "lucide-react";
+import logoImg from "/logo.png";
+
+const WEB3FORMS_KEY = "a51f9d4a-35e4-4a6f-a373-17d570779ea5";
 
 export function WarmContactFooter() {
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("loading");
+    try {
+      const res = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Accept: "application/json" },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          name: form.name,
+          email: form.email,
+          message: form.message,
+          subject: `Portfolio Contact from ${form.name}`,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setStatus("success");
+        setForm({ name: "", email: "", message: "" });
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%",
+    background: "rgba(38, 34, 30, 0.6)",
+    border: "1px solid rgba(255,255,255,0.08)",
+    borderRadius: "0.75rem",
+    color: "#F4F0E6",
+    fontFamily: "'DM Sans', sans-serif",
+    fontSize: "0.95rem",
+    padding: "0.85rem 1.1rem",
+    outline: "none",
+    boxSizing: "border-box",
+    transition: "border-color 0.2s",
+  };
   return (
     <footer id="contact" style={{ background: "#141210" }}>
       {/* ── Gradient divider ── */}
@@ -120,6 +167,103 @@ export function WarmContactFooter() {
               <Mail size={18} />
               kinhnguyen.dev@gmail.com
             </a>
+          </motion.div>
+
+          {/* ── Contact Form ── */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.75, delay: 0.1, ease: [0.16, 1, 0.3, 1] }}
+            viewport={{ once: true }}
+            style={{ maxWidth: "640px", margin: "0 auto 5rem" }}
+          >
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+              {/* Name + Email row */}
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+                <div>
+                  <label style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.68rem", color: "#9A9088", letterSpacing: "0.08em", textTransform: "uppercase", display: "block", marginBottom: "0.4rem" }}>Your name</label>
+                  <input
+                    type="text"
+                    required
+                    placeholder="Nguyen Van A"
+                    value={form.name}
+                    onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+                    style={inputStyle}
+                    onFocus={e => (e.currentTarget.style.borderColor = "rgba(212,163,115,0.45)")}
+                    onBlur={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)")}
+                  />
+                </div>
+                <div>
+                  <label style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.68rem", color: "#9A9088", letterSpacing: "0.08em", textTransform: "uppercase", display: "block", marginBottom: "0.4rem" }}>Your email</label>
+                  <input
+                    type="email"
+                    required
+                    placeholder="you@example.com"
+                    value={form.email}
+                    onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+                    style={inputStyle}
+                    onFocus={e => (e.currentTarget.style.borderColor = "rgba(212,163,115,0.45)")}
+                    onBlur={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)")}
+                  />
+                </div>
+              </div>
+
+              {/* Message */}
+              <div>
+                <label style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.68rem", color: "#9A9088", letterSpacing: "0.08em", textTransform: "uppercase", display: "block", marginBottom: "0.4rem" }}>Message</label>
+                <textarea
+                  required
+                  rows={5}
+                  placeholder="Hi Kính, I'd like to..."
+                  value={form.message}
+                  onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+                  style={{ ...inputStyle, resize: "vertical", minHeight: "120px" }}
+                  onFocus={e => (e.currentTarget.style.borderColor = "rgba(212,163,115,0.45)")}
+                  onBlur={e => (e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)")}
+                />
+              </div>
+
+              {/* Submit */}
+              <button
+                type="submit"
+                disabled={status === "loading" || status === "success"}
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.6rem",
+                  background: status === "success" ? "rgba(91,123,83,0.18)" : "#D4A373",
+                  border: status === "success" ? "1px solid rgba(91,123,83,0.4)" : "none",
+                  borderRadius: "0.75rem",
+                  color: status === "success" ? "#8FAF86" : "#1A1817",
+                  fontFamily: "'DM Sans', sans-serif",
+                  fontSize: "0.95rem",
+                  fontWeight: 600,
+                  padding: "0.9rem 2rem",
+                  cursor: status === "loading" || status === "success" ? "not-allowed" : "pointer",
+                  opacity: status === "loading" ? 0.7 : 1,
+                  transition: "all 0.25s",
+                  alignSelf: "flex-end",
+                  boxShadow: status === "success" ? "none" : "0 2px 8px rgba(0,0,0,0.3), 0 10px 32px rgba(212,163,115,0.18)",
+                }}
+              >
+                {status === "loading" && <span style={{ width: 16, height: 16, border: "2px solid #1A1817", borderTopColor: "transparent", borderRadius: "50%", display: "inline-block", animation: "spin 0.7s linear infinite" }} />}
+                {status === "success" && <CheckCircle size={16} />}
+                {status === "error" && <AlertCircle size={16} />}
+                {status === "idle" && <Send size={16} />}
+                {status === "idle" && "Send Message"}
+                {status === "loading" && "Sending..."}
+                {status === "success" && "Message Sent!"}
+                {status === "error" && "Try Again"}
+              </button>
+
+              {/* Error feedback */}
+              {status === "error" && (
+                <p style={{ fontFamily: "'DM Sans', sans-serif", fontSize: "0.85rem", color: "#C8956C", textAlign: "center", margin: 0 }}>
+                  Something went wrong. Please try again or email me directly.
+                </p>
+              )}
+            </form>
           </motion.div>
 
           {/* Info cards row */}
@@ -258,16 +402,16 @@ export function WarmContactFooter() {
 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
             <div className="flex items-center gap-3">
-              <span
+              <img
+                src={logoImg}
+                alt="NQK Logo"
                 style={{
-                  fontFamily: "'Playfair Display', serif",
-                  color: "#F4F0E6",
-                  fontWeight: 700,
-                  fontSize: "1rem",
+                  height: "28px",
+                  width: "auto",
+                  objectFit: "contain",
+                  display: "block",
                 }}
-              >
-                NQK
-              </span>
+              />
               <span
                 style={{
                   width: "4px",

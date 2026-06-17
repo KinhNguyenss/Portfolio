@@ -1,22 +1,16 @@
 const ROW_ONE = [
   "Java",
   "Spring Boot",
-  "React Native",
-  "Next.js",
-  "Solidity",
-  "Firebase",
-  "TypeScript",
-  "Python",
+  "NodeJs",
+  "JavaScript",
+  "ReactJs",
 ];
 const ROW_TWO = [
-  "Docker",
-  "PostgreSQL",
-  "Hardhat",
-  "FastAPI",
-  "Web3.js",
-  "Redis",
-  "GraphQL",
-  "Prisma",
+  "CSS",
+  "HTML",
+  "Github",
+  "Postman",
+  "HeidiSQL",
 ];
 
 interface PillProps {
@@ -125,7 +119,7 @@ export function TechMarquee() {
           className="flex gap-3 animate-marquee-left"
           style={{ width: "max-content" }}
         >
-          {[...ROW_ONE, ...ROW_ONE].map((tech, i) => (
+          {[...ROW_ONE, ...ROW_ONE, ...ROW_ONE, ...ROW_ONE].map((tech, i) => (
             <Pill
               key={`r1-${i}`}
               label={tech}
@@ -155,7 +149,7 @@ export function TechMarquee() {
           className="flex gap-3 animate-marquee-right"
           style={{ width: "max-content" }}
         >
-          {[...ROW_TWO, ...ROW_TWO].map((tech, i) => (
+          {[...ROW_TWO, ...ROW_TWO, ...ROW_TWO, ...ROW_TWO].map((tech, i) => (
             <Pill
               key={`r2-${i}`}
               label={tech}

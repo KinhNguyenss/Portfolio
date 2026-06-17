@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ArrowUpRight, X, ExternalLink, Newspaper } from "lucide-react";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
 
-const OUTDOOR_IMG =
-  "https://images.unsplash.com/photo-1763469030003-7ae5ddc80442?w=900&h=640&fit=crop&auto=format&q=80";
+import BWD1 from "./../../assets/images/BWD.jpg";
+import BWD2 from "./../../assets/images/BWD5.jpg";
+import BWD3 from "./../../assets/images/BWD2.jpg";
+import BWD4 from "./../../assets/images/BWD3.jpg";
+import BWD5 from "./../../assets/images/BWD4.jpg";
+const BWD_IMAGES = [BWD1, BWD2, BWD3, BWD4, BWD5];
 
 // Press article screenshot (Unsplash placeholder — replace with real screenshot)
 const PRESS_SCREENSHOT =
@@ -44,9 +47,174 @@ const AWARDS = [
     accentColor: "#8FAF86",
     description:
       "I am a member of the VIC club at Vietnam-Korea University.",
-    hasPressModal: false,
+    hasPressModal: true,
   },
 ];
+
+/* ─────────────────────────────────────────────
+   BWD Slideshow Component
+───────────────────────────────────────────── */
+function BWDSlideshow() {
+  const [current, setCurrent] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % BWD_IMAGES.length);
+    }, 3500);
+    return () => clearInterval(timer);
+  }, []);
+
+  return (
+    <div
+      style={{
+        borderRadius: "1.25rem",
+        overflow: "hidden",
+        position: "relative",
+        boxShadow: "0 2px 10px rgba(0,0,0,0.5), 0 24px 72px rgba(0,0,0,0.45)",
+        border: "1px solid rgba(255,255,255,0.07)",
+        height: "460px",
+        cursor: "pointer",
+      }}
+      onClick={() => setCurrent((prev) => (prev + 1) % BWD_IMAGES.length)}
+    >
+      {/* Crossfade images */}
+      <AnimatePresence mode="wait">
+        <motion.img
+          key={current}
+          src={BWD_IMAGES[current]}
+          alt={`BWD 2024 — ảnh ${current + 1}`}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.6, ease: "easeInOut" }}
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "contain",
+            objectPosition: "center",
+            background: "#1A1817",
+          }}
+        />
+      </AnimatePresence>
+
+      {/* Dark gradient overlay */}
+      <div
+        style={{
+          position: "absolute",
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          background:
+            "linear-gradient(180deg, rgba(20,18,16,0.15) 0%, rgba(20,18,16,0.05) 50%, rgba(20,18,16,0.78) 100%)",
+          pointerEvents: "none",
+          zIndex: 1,
+        }}
+      />
+
+      {/* Dot indicators */}
+      <div
+        style={{
+          position: "absolute",
+          top: "1rem",
+          right: "1rem",
+          display: "flex",
+          gap: "0.4rem",
+          zIndex: 2,
+        }}
+      >
+        {BWD_IMAGES.map((_, i) => (
+          <button
+            key={i}
+            onClick={(e) => {
+              e.stopPropagation();
+              setCurrent(i);
+            }}
+            style={{
+              width: i === current ? "20px" : "6px",
+              height: "6px",
+              borderRadius: "9999px",
+              background: i === current ? "#D4A373" : "rgba(255,255,255,0.3)",
+              border: "none",
+              cursor: "pointer",
+              padding: 0,
+              transition: "all 0.3s ease",
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Frosted caption bar */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: 0,
+          left: 0,
+          right: 0,
+          background: "rgba(20, 18, 16, 0.78)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          borderTop: "1px solid rgba(255,255,255,0.07)",
+          padding: "1.2rem 1.5rem",
+          zIndex: 2,
+        }}
+      >
+        <div className="flex items-center justify-between">
+          <div>
+            <div
+              style={{
+                fontFamily: "'Playfair Display', serif",
+                fontSize: "1rem",
+                fontWeight: 600,
+                color: "#F4F0E6",
+                marginBottom: "0.15rem",
+              }}
+            >
+              BWD 2024 — Season 6
+            </div>
+            <div
+              style={{
+                fontFamily: "'DM Mono', monospace",
+                fontSize: "0.68rem",
+                color: "#9A9088",
+                letterSpacing: "0.06em",
+              }}
+            >
+              VKU · Da Nang, Vietnam
+            </div>
+          </div>
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+              background: "rgba(212,163,115,0.12)",
+              border: "1px solid rgba(212,163,115,0.22)",
+              borderRadius: "9999px",
+              padding: "0.35rem 0.85rem",
+            }}
+          >
+            <span
+              style={{
+                fontFamily: "'DM Mono', monospace",
+                fontSize: "0.68rem",
+                color: "#D4A373",
+                letterSpacing: "0.04em",
+              }}
+            >
+              {current + 1} / {BWD_IMAGES.length}
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 /* ─────────────────────────────────────────────
    Press Modal Component
@@ -151,7 +319,7 @@ function PressModal({ onClose }: { onClose: () => void }) {
 
           {/* Screenshot */}
           <div style={{ position: "relative", overflow: "hidden" }}>
-            <ImageWithFallback
+            <img
               src={PRESS_SCREENSHOT}
               alt="Báo đưa tin về cuộc thi BWD 2024 @ VKU"
               style={{
@@ -239,8 +407,7 @@ function PressModal({ onClose }: { onClose: () => void }) {
               VKU thu hút hơn <strong style={{ color: "#F4F0E6" }}>900 sinh viên</strong>{" "}
               CNTT tranh tài. Chỉ{" "}
               <strong style={{ color: "#F4F0E6" }}>13 đội xuất sắc nhất</strong> lọt vào
-              chung kết với yêu cầu thuyết trình sản phẩm bằng{" "}
-              <strong style={{ color: "#F4F0E6" }}>tiếng Anh</strong>.
+              chung kết
             </p>
           </div>
 
@@ -573,118 +740,14 @@ export function WarmAwardsSection() {
               </motion.div>
             </motion.div>
 
-            {/* ── Right: Outdoor photo in frosted card ── */}
+            {/* ── Right: BWD Photo Slideshow ── */}
             <motion.div
               initial={{ opacity: 0, x: 28 }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
               viewport={{ once: true }}
             >
-              <div
-                style={{
-                  borderRadius: "1.25rem",
-                  overflow: "hidden",
-                  position: "relative",
-                  boxShadow:
-                    "0 2px 10px rgba(0,0,0,0.5), 0 24px 72px rgba(0,0,0,0.45)",
-                  border: "1px solid rgba(255,255,255,0.07)",
-                }}
-              >
-                {/* The outdoor photo */}
-                <ImageWithFallback
-                  src={OUTDOOR_IMG}
-                  alt="Vibrant outdoor campus scene with autumn foliage"
-                  style={{
-                    width: "100%",
-                    height: "460px",
-                    objectFit: "cover",
-                    display: "block",
-                  }}
-                />
-
-                {/* Dark overlay */}
-                <div
-                  style={{
-                    position: "absolute",
-                    inset: 0,
-                    background:
-                      "linear-gradient(180deg, rgba(20,18,16,0.25) 0%, rgba(20,18,16,0.08) 50%, rgba(20,18,16,0.72) 100%)",
-                    pointerEvents: "none",
-                  }}
-                />
-
-                {/* Frosted caption bar */}
-                <div
-                  style={{
-                    position: "absolute",
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    background: "rgba(20, 18, 16, 0.78)",
-                    backdropFilter: "blur(20px)",
-                    WebkitBackdropFilter: "blur(20px)",
-                    borderTop: "1px solid rgba(255,255,255,0.07)",
-                    padding: "1.2rem 1.5rem",
-                  }}
-                >
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <div
-                        style={{
-                          fontFamily: "'Playfair Display', serif",
-                          fontSize: "1rem",
-                          fontWeight: 600,
-                          color: "#F4F0E6",
-                          marginBottom: "0.15rem",
-                        }}
-                      >
-                        VKU Campus Life
-                      </div>
-                      <div
-                        style={{
-                          fontFamily: "'DM Mono', monospace",
-                          fontSize: "0.68rem",
-                          color: "#9A9088",
-                          letterSpacing: "0.06em",
-                        }}
-                      >
-                        Da Nang, Vietnam
-                      </div>
-                    </div>
-                    <div
-                      style={{
-                        display: "flex",
-                        alignItems: "center",
-                        gap: "0.5rem",
-                        background: "rgba(91,123,83,0.15)",
-                        border: "1px solid rgba(91,123,83,0.25)",
-                        borderRadius: "9999px",
-                        padding: "0.35rem 0.85rem",
-                      }}
-                    >
-                      <span
-                        style={{
-                          width: "6px",
-                          height: "6px",
-                          borderRadius: "50%",
-                          background: "#5B7B53",
-                          boxShadow: "0 0 6px rgba(91,123,83,0.8)",
-                        }}
-                      />
-                      <span
-                        style={{
-                          fontFamily: "'DM Mono', monospace",
-                          fontSize: "0.68rem",
-                          color: "#8FAF86",
-                          letterSpacing: "0.04em",
-                        }}
-                      >
-                        VIC Club
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <BWDSlideshow />
             </motion.div>
           </div>
         </div>

@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { ArrowRight, Github } from "lucide-react";
+import { ArrowRight, Github, Download } from "lucide-react";
 
 function FloatingOrb() {
   return (
@@ -252,16 +252,15 @@ export function WarmHero() {
               marginBottom: "1.5rem",
             }}
           >
-            Engineering seamless{" "}
+            Nguyễn Quang{" "}
             <span
               style={{
                 fontStyle: "italic",
                 color: "#D4A373",
               }}
             >
-              web experiences
-            </span>{" "}
-            &amp; intelligent systems.
+              Kính
+            </span>
           </h1>
 
           {/* Sub-copy */}
@@ -276,8 +275,7 @@ export function WarmHero() {
             }}
           >
             3rd-year Software Engineering student at VKU — building at the
-            intersection of full-stack architecture, Web3 protocols, and
-            AI-powered systems.
+            intersection of full-stack architecture.
           </p>
 
           {/* CTAs */}
@@ -348,6 +346,36 @@ export function WarmHero() {
             >
               <Github size={16} />
               GitHub
+            </a>
+
+            {/* CV Download */}
+            <a
+              href="/NguyenQuangKinh_WebDeveloperIntern.pdf"
+              download
+              className="inline-flex items-center gap-2.5 transition-all duration-300 hover:scale-[1.03]"
+              style={{
+                background: "rgba(91,123,83,0.12)",
+                border: "1px solid rgba(91,123,83,0.28)",
+                borderRadius: "0.625rem",
+                color: "#8FAF86",
+                fontFamily: "'DM Sans', sans-serif",
+                fontSize: "0.92rem",
+                fontWeight: 500,
+                padding: "0.82rem 1.6rem",
+                textDecoration: "none",
+                boxShadow: "0 2px 8px rgba(0,0,0,0.2)",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLElement).style.background = "rgba(91,123,83,0.22)";
+                (e.currentTarget as HTMLElement).style.borderColor = "rgba(91,123,83,0.45)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLElement).style.background = "rgba(91,123,83,0.12)";
+                (e.currentTarget as HTMLElement).style.borderColor = "rgba(91,123,83,0.28)";
+              }}
+            >
+              <Download size={16} />
+              Download CV
             </a>
           </div>
 

@@ -1,17 +1,22 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { ArrowUpRight } from "lucide-react";
+import logoThichDiCho from "../../assets/images/logo_thichdicho.png";
+import logoVKUMentor from "../../assets/images/logo_vkumentor.png";
 
 interface Project {
   id: number;
   number: string;
   title: string;
   subtitle: string;
+  role?: string;
   description: string;
   tags: string[];
   accentColor: string;
   tagBg: string;
   icon: string;
+  logo?: string;
+  link: string;
 }
 
 const PROJECTS: Project[] = [
@@ -19,49 +24,59 @@ const PROJECTS: Project[] = [
     id: 1,
     number: "01",
     title: "ThuBon AquaChain",
-    subtitle: "Web3 · Solidity · AI Cryptographic",
+    subtitle: "Edge AI · XAI · Blockchain · Web3",
+    role: "Full-stack Web3 Developer — Team size: 3",
     description:
-      "Decentralized seafood traceability platform built on Solidity smart contracts, integrating Edge AI inference for cryptographic supply-chain verification along the ThuBon river basin.",
-    tags: ["Solidity", "Next.js", "FastAPI", "AI"],
+      "Developed a decentralized traceability platform combining Edge AI and Blockchain to solve the transparency crisis in Vietnam's seafood supply chain, directly supporting the national effort to lift the EC's IUU yellow card.",
+    tags: ["Solidity", "Ethereum", "FastAPI", "Next.js",],
     accentColor: "#D4A373",
     tagBg: "rgba(212,163,115,0.1)",
     icon: "🐟",
+    link: "https://github.com/KinhNguyenss/blockchain-thubon.git",
   },
   {
     id: 2,
     number: "02",
     title: "VKU Alumni Platform",
     subtitle: "Java · Spring Boot · RESTful API",
+    role: "Backend Developer — Team size: 4",
     description:
-      "Enterprise alumni management system with Spring Boot microservices, JWT auth, role-based access control, and optimized MySQL queries serving thousands of concurrent users.",
+      `An educational ecosystem bridging experienced alumni and professionals with students seeking academic and career guidance.`,
     tags: ["Java 17", "Spring Boot", "MySQL"],
     accentColor: "#8FAF86",
     tagBg: "rgba(91,123,83,0.1)",
     icon: "🏛️",
+    logo: logoVKUMentor,
+    link: "https://vku-mentor.vercel.app/",
   },
   {
     id: 3,
     number: "03",
     title: "TKApp E-Commerce",
     subtitle: "React Native · Stripe · Firebase",
+    role: "Mobile Developer — Team size: 2",
     description:
       "Cross-platform mobile e-commerce app with Stripe payments, real-time Firebase inventory sync, smart product recommendations, and a streamlined checkout experience.",
     tags: ["React Native", "Stripe", "Firebase"],
     accentColor: "#C8956C",
     tagBg: "rgba(200,149,108,0.1)",
     icon: "🛒",
+    link: "https://github.com/KinhNguyenss/TKApp_ecommerce_danentang.git",
   },
   {
     id: 4,
     number: "04",
     title: "ThichDiCho Platform",
     subtitle: "Next.js · TypeScript · UI Architecture",
+    role: "Frontend Developer — Team size: 11",
     description:
-      "High-performance marketplace web app built with Next.js App Router and TypeScript, achieving 98/100 Lighthouse score through advanced code-splitting, ISR, and a scalable component system.",
+      `ThichDiCho is a comprehensive online grocery platform that digitizes the daily shopping experience, functioning as a highly convenient digital supermarket. It empowers users to effortlessly browse and purchase household essentials from home through dynamic "Popular & Hot" product showcases and interactive dual-carousel media galleries for detailed item inspection. Coupled with a seamless user management system for secure cart tracking and ordering, it delivers a complete, end-to-end e-commerce solution.`,
     tags: ["Next.js", "TypeScript"],
     accentColor: "#9A9088",
     tagBg: "rgba(154,144,136,0.1)",
     icon: "🗺️",
+    logo: logoThichDiCho,
+    link: "https://thichdicho.com/",
   },
 ];
 
@@ -163,6 +178,7 @@ export function WarmProjectsSection() {
               >
                 <div
                   className="h-full relative overflow-hidden"
+                  onClick={() => window.open(project.link, "_blank", "noopener,noreferrer")}
                   style={{
                     background:
                       "linear-gradient(145deg, rgba(42, 38, 34, 0.92) 0%, rgba(30, 27, 24, 0.95) 100%)",
@@ -173,7 +189,7 @@ export function WarmProjectsSection() {
                     padding: "2rem",
                     boxShadow:
                       "0 1px 0px rgba(255,255,255,0.04) inset, 0 2px 10px rgba(0,0,0,0.4), 0 20px 60px rgba(0,0,0,0.35)",
-                    cursor: "default",
+                    cursor: "pointer",
                   }}
                 >
                   {/* Accent corner glow */}
@@ -192,7 +208,35 @@ export function WarmProjectsSection() {
                   {/* Top row */}
                   <div className="flex items-start justify-between mb-5">
                     <div className="flex items-center gap-3">
-                      <span style={{ fontSize: "1.8rem" }}>{project.icon}</span>
+                      {project.logo ? (
+                        <div
+                          style={{
+                            width: "56px",
+                            height: "56px",
+                            borderRadius: "0.75rem",
+                            background: `${project.accentColor}10`,
+                            border: `1px solid ${project.accentColor}20`,
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            overflow: "hidden",
+                            flexShrink: 0,
+                          }}
+                        >
+                          <img
+                            src={project.logo}
+                            alt={`${project.title} logo`}
+                            style={{
+                              width: "100%",
+                              height: "100%",
+                              objectFit: "contain",
+                              padding: "4px",
+                            }}
+                          />
+                        </div>
+                      ) : (
+                        <span style={{ fontSize: "1.8rem" }}>{project.icon}</span>
+                      )}
                       <span
                         style={{
                           fontFamily: "'DM Mono', monospace",
@@ -205,8 +249,10 @@ export function WarmProjectsSection() {
                       </span>
                     </div>
                     <a
-                      href="#"
-                      className="opacity-0 group-hover:opacity-100 transition-opacity"
+                      href={project.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={(e) => e.stopPropagation()}
                       style={{
                         display: "flex",
                         alignItems: "center",
@@ -257,12 +303,40 @@ export function WarmProjectsSection() {
                       fontSize: "0.72rem",
                       color: project.accentColor,
                       letterSpacing: "0.04em",
-                      marginBottom: "1rem",
+                      marginBottom: project.role ? "0.5rem" : "1rem",
                       opacity: 0.85,
                     }}
                   >
                     {project.subtitle}
                   </p>
+
+                  {/* Role badge (optional) */}
+                  {project.role && (
+                    <div
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "0.4rem",
+                        background: `${project.accentColor}10`,
+                        border: `1px solid ${project.accentColor}28`,
+                        borderRadius: "0.5rem",
+                        padding: "0.3rem 0.7rem",
+                        marginBottom: "1rem",
+                      }}
+                    >
+                      <span style={{ fontSize: "0.68rem" }}>👤</span>
+                      <span
+                        style={{
+                          fontFamily: "'DM Mono', monospace",
+                          fontSize: "0.68rem",
+                          color: project.accentColor,
+                          letterSpacing: "0.03em",
+                        }}
+                      >
+                        {project.role}
+                      </span>
+                    </div>
+                  )}
 
                   {/* Divider */}
                   <div

@@ -1,8 +1,5 @@
 import { motion } from "motion/react";
-import { ImageWithFallback } from "./figma/ImageWithFallback";
-
-const BOOKSTORE_IMG =
-  "https://images.unsplash.com/photo-1762553338304-c4bfc4000488?w=800&h=1040&fit=crop&auto=format&q=80";
+import profileImg from "../../assets/images/daidien2.jpg";
 
 export function WarmAboutSection() {
   return (
@@ -47,11 +44,14 @@ export function WarmAboutSection() {
               marginBottom: "1.8rem",
             }}
           >
-            Building things that{" "}
+            Learn, learn{" "}
             <span style={{ fontStyle: "italic", color: "#D4A373" }}>
-              matter
-            </span>{" "}
-            — one system at a time.
+              more
+            </span>
+            {" "}— learn{" "}
+            <span style={{ fontStyle: "italic", color: "#D4A373" }}>
+              forever.
+            </span>
           </h2>
 
           <div
@@ -92,8 +92,6 @@ export function WarmAboutSection() {
               <span style={{ color: "#D4A373", fontWeight: 500 }}>
                 full-stack development
               </span>
-              , with a deep curiosity for Web3 smart contracts and
-              AI-powered systems integration.
             </p>
 
             <p
@@ -127,7 +125,7 @@ export function WarmAboutSection() {
               {
                 icon: "🎯",
                 label: "Focus",
-                value: "Backend, Full-Stack, Web3 & AI",
+                value: "Backend, Full-Stack, DevOps",
               },
             ].map((item) => (
               <div
@@ -210,14 +208,15 @@ export function WarmAboutSection() {
             />
 
             {/* The image */}
-            <ImageWithFallback
-              src={BOOKSTORE_IMG}
-              alt="Person in a cozy, atmospheric bookstore"
+            <img
+              src={profileImg}
+              alt="Nguyễn Quang Kính — profile photo"
               style={{
                 width: "100%",
                 maxWidth: "420px",
                 height: "540px",
                 objectFit: "cover",
+                objectPosition: "center top",
                 borderRadius: "24px",
                 position: "relative",
                 zIndex: 2,

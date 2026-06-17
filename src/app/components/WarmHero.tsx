@@ -360,7 +360,7 @@ export function WarmHero() {
           >
             {[
               { value: "3.22", label: "GPA" },
-              { value: "4+", label: "Projects" },
+              { value: "30+", label: "Projects" },
               { value: "VKU", label: "University" },
             ].map((s) => (
               <div key={s.label}>

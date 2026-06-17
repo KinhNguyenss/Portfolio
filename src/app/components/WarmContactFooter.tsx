@@ -1,9 +1,15 @@
 import { useState } from "react";
 import { motion } from "motion/react";
 import { Mail, Github, ArrowUpRight, MapPin, Send, CheckCircle, AlertCircle } from "lucide-react";
+import emailjs from "@emailjs/browser";
 import logoImg from "/logo.png";
 
-const WEB3FORMS_KEY = "a51f9d4a-35e4-4a6f-a373-17d570779ea5";
+// ─── EmailJS config ───────────────────────────────────────────────
+// Credentials được load từ file .env (không commit lên GitHub)
+const EMAILJS_SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+const EMAILJS_PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
+// ──────────────────────────────────────────────────────────────────
 
 export function WarmContactFooter() {
   const [form, setForm] = useState({ name: "", email: "", message: "" });
@@ -13,24 +19,21 @@ export function WarmContactFooter() {
     e.preventDefault();
     setStatus("loading");
     try {
-      const res = await fetch("https://api.web3forms.com/submit", {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({
-          access_key: WEB3FORMS_KEY,
-          name: form.name,
-          email: form.email,
-          message: form.message,
-          subject: `Portfolio Contact from ${form.name}`,
-        }),
-      });
-      const data = await res.json();
-      if (data.success) {
-        setStatus("success");
-        setForm({ name: "", email: "", message: "" });
-      } else {
-        setStatus("error");
-      }
+      // EmailJS gửi email trực tiếp qua Gmail của bạn
+      // Template variables: {{from_name}}, {{from_email}}, {{message}}, {{reply_to}}
+      await emailjs.send(
+        EMAILJS_SERVICE_ID,
+        EMAILJS_TEMPLATE_ID,
+        {
+          name: form.name,               // khớp với {{name}} trong template
+          email: form.email,             // khớp với {{email}} (Reply To)
+          message: form.message,         // khớp với {{message}} trong template
+          title: `Portfolio Contact from ${form.name}`, // khớp với {{title}} (Subject)
+        },
+        { publicKey: EMAILJS_PUBLIC_KEY }
+      );
+      setStatus("success");
+      setForm({ name: "", email: "", message: "" });
     } catch {
       setStatus("error");
     }

@@ -663,16 +663,16 @@ export function WarmAwardsSection() {
                       </div>
 
                       <div className="flex-1" style={{ minWidth: 0 }}>
-                        {/* Title row */}
+                        {/* Title + badge: column layout to avoid overlap on narrow screens */}
                         <div
                           style={{
                             display: "flex",
-                            alignItems: "flex-start",
-                            justifyContent: "space-between",
-                            gap: "0.5rem",
+                            flexDirection: "column",
+                            gap: "0.35rem",
                             marginBottom: "0.25rem",
                           }}
                         >
+                          {/* Title — always takes full width */}
                           <h3
                             className="award-title"
                             style={{
@@ -680,20 +680,18 @@ export function WarmAwardsSection() {
                               fontWeight: 600,
                               color: "#F4F0E6",
                               lineHeight: 1.3,
-                              minWidth: 0,
-                              flex: "1 1 0",
+                              margin: 0,
                             }}
                           >
                             {award.title}
                           </h3>
 
-                          {/* Year badge — with ↗ button for BWD card */}
+                          {/* Year badge + ↗ button on its own sub-row */}
                           <div
                             style={{
                               display: "flex",
                               alignItems: "center",
                               gap: "0.35rem",
-                              flexShrink: 0,
                             }}
                           >
                             <span

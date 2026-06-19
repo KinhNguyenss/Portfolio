@@ -55,6 +55,57 @@ export function WarmContactFooter() {
   };
   return (
     <footer id="contact" style={{ background: "#141210" }}>
+      {/* Responsive styles */}
+      <style>{`
+        .contact-content {
+          padding: 0 2.5rem 6rem;
+        }
+        .contact-email-cta {
+          display: inline-flex;
+          align-items: center;
+          gap: 0.75rem;
+          background: #D4A373;
+          border-radius: 0.75rem;
+          color: #1A1817;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 1rem;
+          font-weight: 600;
+          padding: 1rem 2rem;
+          text-decoration: none;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.35), 0 12px 40px rgba(212,163,115,0.2);
+          transition: all 0.3s;
+          max-width: 100%;
+          word-break: break-all;
+        }
+        .contact-form-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1rem;
+        }
+        .contact-footer-text {
+          font-family: 'DM Mono', monospace;
+          font-size: 0.7rem;
+          color: #9A9088;
+        }
+        @media (max-width: 640px) {
+          .contact-content {
+            padding: 0 1rem 4rem;
+          }
+          .contact-email-cta {
+            font-size: 0.8rem;
+            padding: 0.85rem 1.25rem;
+            gap: 0.5rem;
+            border-radius: 0.625rem;
+          }
+          .contact-form-grid {
+            grid-template-columns: 1fr;
+          }
+          .contact-footer-text {
+            font-size: 0.62rem;
+            text-align: center;
+          }
+        }
+      `}</style>
       {/* ── Gradient divider ── */}
       <div
         style={{
@@ -81,7 +132,7 @@ export function WarmContactFooter() {
       </div>
 
       {/* ── Contact content ── */}
-      <div style={{ padding: "0 2.5rem 6rem" }}>
+      <div className="contact-content">
         <div className="max-w-6xl mx-auto">
           {/* Main contact block */}
           <motion.div
@@ -142,19 +193,7 @@ export function WarmContactFooter() {
             {/* Primary email CTA */}
             <a
               href="mailto:kinhnguyen.dev@gmail.com"
-              className="inline-flex items-center gap-3 transition-all duration-300 hover:scale-[1.04]"
-              style={{
-                background: "#D4A373",
-                borderRadius: "0.75rem",
-                color: "#1A1817",
-                fontFamily: "'DM Sans', sans-serif",
-                fontSize: "1rem",
-                fontWeight: 600,
-                padding: "1rem 2rem",
-                textDecoration: "none",
-                boxShadow:
-                  "0 2px 8px rgba(0,0,0,0.35), 0 12px 40px rgba(212,163,115,0.2)",
-              }}
+              className="contact-email-cta hover:scale-[1.04]"
               onMouseEnter={(e) => {
                 const el = e.currentTarget as HTMLElement;
                 el.style.background = "#E0B585";
@@ -183,7 +222,7 @@ export function WarmContactFooter() {
           >
             <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               {/* Name + Email row */}
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+              <div className="contact-form-grid">
                 <div>
                   <label style={{ fontFamily: "'DM Mono', monospace", fontSize: "0.68rem", color: "#9A9088", letterSpacing: "0.08em", textTransform: "uppercase", display: "block", marginBottom: "0.4rem" }}>Your name</label>
                   <input
@@ -436,13 +475,7 @@ export function WarmContactFooter() {
             </div>
 
             <div className="flex items-center gap-6">
-              <span
-                style={{
-                  fontFamily: "'DM Mono', monospace",
-                  fontSize: "0.7rem",
-                  color: "#9A9088",
-                }}
-              >
+              <span className="contact-footer-text">
                 Crafted with care · VKU Software Engineering
               </span>
             </div>

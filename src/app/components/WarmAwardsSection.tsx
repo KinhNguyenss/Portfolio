@@ -482,12 +482,87 @@ export function WarmAwardsSection() {
 
   return (
     <>
+      {/* Responsive styles */}
+      <style>{`
+        .awards-section {
+          background: #1A1817;
+          padding: 9rem 2.5rem;
+        }
+        .award-card {
+          padding: 1.8rem;
+        }
+        .award-icon {
+          width: 52px;
+          height: 52px;
+          font-size: 1.5rem;
+        }
+        .award-icon-row {
+          display: flex;
+          align-items: flex-start;
+          gap: 1rem;
+        }
+        .award-title {
+          font-size: 1.05rem;
+        }
+        .stat-card {
+          text-align: center;
+          padding: 1rem;
+          background: rgba(38, 34, 30, 0.5);
+          border: 1px solid rgba(255,255,255,0.06);
+          border-radius: 0.875rem;
+        }
+        .stat-value {
+          font-family: 'Playfair Display', serif;
+          font-size: 1.4rem;
+          font-weight: 700;
+          color: #D4A373;
+        }
+        .stat-label {
+          font-family: 'DM Mono', monospace;
+          font-size: 0.65rem;
+          color: #9A9088;
+          letter-spacing: 0.1em;
+          margin-top: 0.2rem;
+        }
+        @media (max-width: 640px) {
+          .awards-section {
+            padding: 5rem 1rem;
+          }
+          .award-card {
+            padding: 1.1rem;
+          }
+          .award-icon {
+            width: 40px;
+            height: 40px;
+            font-size: 1.1rem;
+            border-radius: 0.625rem;
+          }
+          .award-icon-row {
+            gap: 0.75rem;
+          }
+          .award-title {
+            font-size: 0.95rem;
+          }
+          .stat-card {
+            padding: 0.6rem 0.25rem;
+            border-radius: 0.625rem;
+          }
+          .stat-value {
+            font-size: 1.1rem;
+          }
+          .stat-label {
+            font-size: 0.55rem;
+            letter-spacing: 0.04em;
+          }
+        }
+      `}</style>
+
       {/* Press Modal */}
       {modalOpen && <PressModal onClose={() => setModalOpen(false)} />}
 
       <section
         id="awards"
-        style={{ background: "#1A1817", padding: "9rem 2.5rem" }}
+        className="awards-section"
       >
         <div className="max-w-6xl mx-auto">
           {/* Header */}
@@ -546,12 +621,12 @@ export function WarmAwardsSection() {
                 >
                   <div
                     onClick={() => award.hasPressModal && setModalOpen(true)}
+                    className="award-card"
                     style={{
                       background:
                         "linear-gradient(145deg, rgba(40, 36, 32, 0.9) 0%, rgba(30, 27, 24, 0.95) 100%)",
                       border: "1px solid rgba(255, 255, 255, 0.07)",
                       borderRadius: "1.1rem",
-                      padding: "1.8rem",
                       boxShadow:
                         "0 1px 0 rgba(255,255,255,0.04) inset, 0 2px 8px rgba(0,0,0,0.35), 0 16px 48px rgba(0,0,0,0.28)",
                       transition: "transform 0.3s ease, box-shadow 0.3s ease",
@@ -569,19 +644,17 @@ export function WarmAwardsSection() {
                         "0 1px 0 rgba(255,255,255,0.04) inset, 0 2px 8px rgba(0,0,0,0.35), 0 16px 48px rgba(0,0,0,0.28)";
                     }}
                   >
-                    <div className="flex items-start gap-4">
+                    <div className="award-icon-row">
                       {/* Icon */}
                       <div
+                        className="award-icon"
                         style={{
-                          width: "52px",
-                          height: "52px",
                           borderRadius: "0.875rem",
                           background: `${award.accentColor}12`,
                           border: `1px solid ${award.accentColor}25`,
                           display: "flex",
                           alignItems: "center",
                           justifyContent: "center",
-                          fontSize: "1.5rem",
                           flexShrink: 0,
                           boxShadow: `0 4px 16px ${award.accentColor}10`,
                         }}
@@ -589,16 +662,26 @@ export function WarmAwardsSection() {
                         {award.icon}
                       </div>
 
-                      <div className="flex-1">
+                      <div className="flex-1" style={{ minWidth: 0 }}>
                         {/* Title row */}
-                        <div className="flex items-start justify-between gap-2 mb-1">
+                        <div
+                          style={{
+                            display: "flex",
+                            alignItems: "flex-start",
+                            justifyContent: "space-between",
+                            gap: "0.5rem",
+                            marginBottom: "0.25rem",
+                          }}
+                        >
                           <h3
+                            className="award-title"
                             style={{
                               fontFamily: "'Playfair Display', serif",
-                              fontSize: "1.05rem",
                               fontWeight: 600,
                               color: "#F4F0E6",
                               lineHeight: 1.3,
+                              minWidth: 0,
+                              flex: "1 1 0",
                             }}
                           >
                             {award.title}
@@ -616,13 +699,14 @@ export function WarmAwardsSection() {
                             <span
                               style={{
                                 fontFamily: "'DM Mono', monospace",
-                                fontSize: "0.68rem",
+                                fontSize: "0.65rem",
                                 color: award.accentColor,
                                 background: `${award.accentColor}12`,
                                 border: `1px solid ${award.accentColor}22`,
                                 borderRadius: "9999px",
-                                padding: "0.18rem 0.65rem",
+                                padding: "0.18rem 0.6rem",
                                 whiteSpace: "nowrap",
+                                display: "inline-block",
                               }}
                             >
                               {award.year}
@@ -707,32 +791,12 @@ export function WarmAwardsSection() {
                 ].map((s) => (
                   <div
                     key={s.label}
-                    className="text-center p-4"
-                    style={{
-                      background: "rgba(38, 34, 30, 0.5)",
-                      border: "1px solid rgba(255,255,255,0.06)",
-                      borderRadius: "0.875rem",
-                    }}
+                    className="stat-card"
                   >
-                    <div
-                      style={{
-                        fontFamily: "'Playfair Display', serif",
-                        fontSize: "1.4rem",
-                        fontWeight: 700,
-                        color: "#D4A373",
-                      }}
-                    >
+                    <div className="stat-value">
                       {s.value}
                     </div>
-                    <div
-                      style={{
-                        fontFamily: "'DM Mono', monospace",
-                        fontSize: "0.65rem",
-                        color: "#9A9088",
-                        letterSpacing: "0.1em",
-                        marginTop: "0.2rem",
-                      }}
-                    >
+                    <div className="stat-label">
                       {s.label}
                     </div>
                   </div>
